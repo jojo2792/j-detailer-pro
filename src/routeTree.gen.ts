@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as RewardsRouteImport } from './routes/rewards'
 import { Route as MembershipsRouteImport } from './routes/memberships'
 import { Route as IndexRouteImport } from './routes/index'
 
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RewardsRoute = RewardsRouteImport.update({
+  id: '/rewards',
+  path: '/rewards',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MembershipsRoute = MembershipsRouteImport.update({
@@ -32,30 +38,34 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/memberships': typeof MembershipsRoute
+  '/rewards': typeof RewardsRoute
   '/services': typeof ServicesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/memberships': typeof MembershipsRoute
+  '/rewards': typeof RewardsRoute
   '/services': typeof ServicesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/memberships': typeof MembershipsRoute
+  '/rewards': typeof RewardsRoute
   '/services': typeof ServicesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/memberships' | '/services'
+  fullPaths: '/' | '/memberships' | '/rewards' | '/services'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/memberships' | '/services'
-  id: '__root__' | '/' | '/memberships' | '/services'
+  to: '/' | '/memberships' | '/rewards' | '/services'
+  id: '__root__' | '/' | '/memberships' | '/rewards' | '/services'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MembershipsRoute: typeof MembershipsRoute
+  RewardsRoute: typeof RewardsRoute
   ServicesRoute: typeof ServicesRoute
 }
 
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rewards': {
+      id: '/rewards'
+      path: '/rewards'
+      fullPath: '/rewards'
+      preLoaderRoute: typeof RewardsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/memberships': {
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MembershipsRoute: MembershipsRoute,
+  RewardsRoute: RewardsRoute,
   ServicesRoute: ServicesRoute,
 }
 export const routeTree = rootRouteImport
