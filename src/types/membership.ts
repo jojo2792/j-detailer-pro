@@ -61,6 +61,8 @@ export interface Membership {
   daysUntilRenewal: number;
 }
 
+export type JsonValue = string | number | boolean | null;
+
 export interface MembershipHistoryEntry {
   id: string;
   event: MembershipEvent;
@@ -68,7 +70,7 @@ export interface MembershipHistoryEntry {
   createdAt: string;
   fromPlanName: string | null;
   toPlanName: string | null;
-  metadata: Record<string, unknown>;
+  metadata: Record<string, JsonValue>;
 }
 
 export interface MembershipSnapshot {
