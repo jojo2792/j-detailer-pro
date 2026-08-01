@@ -14,16 +14,378 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      membership_history: {
+        Row: {
+          created_at: string
+          event: Database["public"]["Enums"]["membership_event"]
+          from_plan_id: string | null
+          id: string
+          membership_id: string
+          metadata: Json
+          note: string | null
+          to_plan_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event: Database["public"]["Enums"]["membership_event"]
+          from_plan_id?: string | null
+          id?: string
+          membership_id: string
+          metadata?: Json
+          note?: string | null
+          to_plan_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event?: Database["public"]["Enums"]["membership_event"]
+          from_plan_id?: string | null
+          id?: string
+          membership_id?: string
+          metadata?: Json
+          note?: string | null
+          to_plan_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "membership_history_from_plan_id_fkey"
+            columns: ["from_plan_id"]
+            isOneToOne: false
+            referencedRelation: "membership_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "membership_history_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "membership_history_to_plan_id_fkey"
+            columns: ["to_plan_id"]
+            isOneToOne: false
+            referencedRelation: "membership_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      membership_plans: {
+        Row: {
+          created_at: string
+          currency: string
+          discount_percentage: number
+          features: Json
+          id: string
+          is_active: boolean
+          is_featured: boolean
+          limits: Json
+          monthly_interior_limit: number
+          monthly_price_cents: number
+          monthly_wash_limit: number
+          name: string
+          requires_quote: boolean
+          reward_multiplier: number
+          slug: string
+          tagline: string | null
+          tier_rank: number
+          updated_at: string
+          vehicle_limit: number
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          discount_percentage?: number
+          features?: Json
+          id?: string
+          is_active?: boolean
+          is_featured?: boolean
+          limits?: Json
+          monthly_interior_limit?: number
+          monthly_price_cents: number
+          monthly_wash_limit?: number
+          name: string
+          requires_quote?: boolean
+          reward_multiplier?: number
+          slug: string
+          tagline?: string | null
+          tier_rank?: number
+          updated_at?: string
+          vehicle_limit?: number
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          discount_percentage?: number
+          features?: Json
+          id?: string
+          is_active?: boolean
+          is_featured?: boolean
+          limits?: Json
+          monthly_interior_limit?: number
+          monthly_price_cents?: number
+          monthly_wash_limit?: number
+          name?: string
+          requires_quote?: boolean
+          reward_multiplier?: number
+          slug?: string
+          tagline?: string | null
+          tier_rank?: number
+          updated_at?: string
+          vehicle_limit?: number
+        }
+        Relationships: []
+      }
+      memberships: {
+        Row: {
+          auto_renew: boolean
+          billing_customer_id: string | null
+          billing_provider: string | null
+          billing_subscription_id: string | null
+          cancel_at_period_end: boolean
+          cancelled_at: string | null
+          created_at: string
+          current_period_end: string
+          current_period_start: string
+          id: string
+          interior_details_used: number
+          paused_at: string | null
+          pending_plan_id: string | null
+          plan_id: string
+          renewal_date: string
+          resumes_at: string | null
+          started_at: string
+          status: Database["public"]["Enums"]["membership_status"]
+          updated_at: string
+          user_id: string
+          washes_used: number
+        }
+        Insert: {
+          auto_renew?: boolean
+          billing_customer_id?: string | null
+          billing_provider?: string | null
+          billing_subscription_id?: string | null
+          cancel_at_period_end?: boolean
+          cancelled_at?: string | null
+          created_at?: string
+          current_period_end?: string
+          current_period_start?: string
+          id?: string
+          interior_details_used?: number
+          paused_at?: string | null
+          pending_plan_id?: string | null
+          plan_id: string
+          renewal_date?: string
+          resumes_at?: string | null
+          started_at?: string
+          status?: Database["public"]["Enums"]["membership_status"]
+          updated_at?: string
+          user_id: string
+          washes_used?: number
+        }
+        Update: {
+          auto_renew?: boolean
+          billing_customer_id?: string | null
+          billing_provider?: string | null
+          billing_subscription_id?: string | null
+          cancel_at_period_end?: boolean
+          cancelled_at?: string | null
+          created_at?: string
+          current_period_end?: string
+          current_period_start?: string
+          id?: string
+          interior_details_used?: number
+          paused_at?: string | null
+          pending_plan_id?: string | null
+          plan_id?: string
+          renewal_date?: string
+          resumes_at?: string | null
+          started_at?: string
+          status?: Database["public"]["Enums"]["membership_status"]
+          updated_at?: string
+          user_id?: string
+          washes_used?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memberships_pending_plan_id_fkey"
+            columns: ["pending_plan_id"]
+            isOneToOne: false
+            referencedRelation: "membership_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memberships_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "membership_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      log_membership_event: {
+        Args: {
+          _event: Database["public"]["Enums"]["membership_event"]
+          _from_plan_id?: string
+          _membership_id: string
+          _metadata?: Json
+          _note?: string
+          _to_plan_id?: string
+        }
+        Returns: undefined
+      }
+      record_membership_usage: {
+        Args: { _kind: string; _membership_id: string; _quantity?: number }
+        Returns: {
+          auto_renew: boolean
+          billing_customer_id: string | null
+          billing_provider: string | null
+          billing_subscription_id: string | null
+          cancel_at_period_end: boolean
+          cancelled_at: string | null
+          created_at: string
+          current_period_end: string
+          current_period_start: string
+          id: string
+          interior_details_used: number
+          paused_at: string | null
+          pending_plan_id: string | null
+          plan_id: string
+          renewal_date: string
+          resumes_at: string | null
+          started_at: string
+          status: Database["public"]["Enums"]["membership_status"]
+          updated_at: string
+          user_id: string
+          washes_used: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "memberships"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      reset_due_membership_cycles: { Args: never; Returns: number }
+      sync_membership_cycle: {
+        Args: { _membership_id: string }
+        Returns: {
+          auto_renew: boolean
+          billing_customer_id: string | null
+          billing_provider: string | null
+          billing_subscription_id: string | null
+          cancel_at_period_end: boolean
+          cancelled_at: string | null
+          created_at: string
+          current_period_end: string
+          current_period_start: string
+          id: string
+          interior_details_used: number
+          paused_at: string | null
+          pending_plan_id: string | null
+          plan_id: string
+          renewal_date: string
+          resumes_at: string | null
+          started_at: string
+          status: Database["public"]["Enums"]["membership_status"]
+          updated_at: string
+          user_id: string
+          washes_used: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "memberships"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "customer" | "technician" | "admin"
+      membership_event:
+        | "created"
+        | "activated"
+        | "upgraded"
+        | "downgraded"
+        | "paused"
+        | "resumed"
+        | "cancelled"
+        | "renewed"
+        | "cycle_reset"
+        | "usage_recorded"
+        | "auto_renew_changed"
+        | "expired"
+      membership_status:
+        | "pending"
+        | "active"
+        | "paused"
+        | "cancelled"
+        | "expired"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +512,29 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["customer", "technician", "admin"],
+      membership_event: [
+        "created",
+        "activated",
+        "upgraded",
+        "downgraded",
+        "paused",
+        "resumed",
+        "cancelled",
+        "renewed",
+        "cycle_reset",
+        "usage_recorded",
+        "auto_renew_changed",
+        "expired",
+      ],
+      membership_status: [
+        "pending",
+        "active",
+        "paused",
+        "cancelled",
+        "expired",
+      ],
+    },
   },
 } as const
