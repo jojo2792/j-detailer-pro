@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
+import { useAuth } from "@/hooks/use-auth";
 
 const links = [
   { to: "/", label: "Home" },
@@ -13,6 +14,7 @@ const links = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
   return (
     <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -39,6 +41,12 @@ export function Navbar() {
               {l.label}
             </Link>
           ))}
+          <Link
+            to={isAuthenticated ? "/dashboard" : "/auth"}
+            className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
+          >
+            {isAuthenticated ? "My Account" : "Sign In"}
+          </Link>
           <Link
             to="/book"
             className="inline-flex items-center rounded-full bg-gradient-gold px-5 py-2 text-xs font-semibold uppercase tracking-widest text-primary-foreground shadow-gold transition-transform hover:-translate-y-0.5"
@@ -67,6 +75,13 @@ export function Navbar() {
                 {l.label}
               </Link>
             ))}
+            <Link
+              to={isAuthenticated ? "/dashboard" : "/auth"}
+              onClick={() => setOpen(false)}
+              className="py-3 text-sm font-medium text-foreground/90 hover:text-primary"
+            >
+              {isAuthenticated ? "My Account" : "Sign In"}
+            </Link>
             <Link
               to="/book"
               onClick={() => setOpen(false)}
