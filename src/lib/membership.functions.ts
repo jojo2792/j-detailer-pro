@@ -1,10 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { mapHistory, mapMembership, mapPlan } from "@/lib/membership-mapper";
+import { mapPlan } from "@/lib/membership-mapper";
 import type { MembershipPlan, MembershipSnapshot } from "@/types/membership";
-
-const LIVE_STATUSES = ["pending", "active", "paused"] as const;
 
 const planSlugInput = (data: unknown) => z.object({ planSlug: z.string().min(1).max(50) }).parse(data);
 
@@ -81,6 +79,3 @@ export const getMyAccount = createServerFn({ method: "GET" })
     const { loadAccount } = await import("@/lib/membership.server");
     return loadAccount(context.supabase, context.userId);
   });
-
-export const liveMembershipStatuses = LIVE_STATUSES;
-export { mapHistory, mapMembership };
