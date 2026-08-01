@@ -1,4 +1,5 @@
 import type {
+  JsonValue,
   Membership,
   MembershipHistoryEntry,
   MembershipPlan,
@@ -66,6 +67,14 @@ export function mapMembership(row: Row, plan: MembershipPlan, pendingPlan: Membe
 export function mapHistory(row: Row, planNames: Map<string, string>): MembershipHistoryEntry {
   const from = row["from_plan_id"] as string | null;
   const to = row["to_plan_id"] as string | null;
+  const rawMeta = (row["metadata"] as Record<string, unknown> | null) ?? {};
+  const metadata: Record<string, JsonValue> = {};
+  for (const [key, value] of Object.entries(rawMeta)) {
+    metadata[key] =
+      value === null || ["string", "number", "boolean"].includes(typeof value)
+        ? (value as JsonValue)
+        : JSON.stringify(value);
+  }
   return {
     id: String(row["id"]),
     event: row["event"] as MembershipHistoryEntry["event"],
@@ -73,7 +82,7 @@ export function mapHistory(row: Row, planNames: Map<string, string>): Membership
     createdAt: String(row["created_at"]),
     fromPlanName: from ? (planNames.get(from) ?? null) : null,
     toPlanName: to ? (planNames.get(to) ?? null) : null,
-    metadata: (row["metadata"] as Record<string, unknown>) ?? {},
+    metadata,
   };
 }
 
