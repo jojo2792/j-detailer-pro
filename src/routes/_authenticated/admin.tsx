@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
-import { ShieldAlert } from "lucide-react";
+import { ShieldAlert, Users2 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
@@ -59,9 +59,19 @@ function AdminCrm() {
             <div className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">Operations</div>
             <h1 className="mt-2 truncate font-display text-3xl font-bold sm:text-4xl">Admin CRM</h1>
           </div>
-          <p className="shrink-0 text-xs uppercase tracking-widest text-muted-foreground">
-            {canViewRevenue ? "Admin access" : canViewMembers ? "Technician access" : "Restricted"}
-          </p>
+          <div className="flex shrink-0 items-center gap-4">
+            {Boolean(permissions?.canManageMembers) && (
+              <Link
+                to="/team"
+                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-semibold uppercase tracking-widest text-foreground/80 transition-colors hover:border-primary hover:text-primary"
+              >
+                <Users2 className="h-4 w-4" aria-hidden /> Roles
+              </Link>
+            )}
+            <p className="text-xs uppercase tracking-widest text-muted-foreground">
+              {canViewRevenue ? "Admin access" : canViewMembers ? "Technician access" : "Restricted"}
+            </p>
+          </div>
         </header>
 
         {accessLoading ? (
