@@ -92,3 +92,17 @@ export interface AdminMembersPage {
   pageSize: number;
   pageCount: number;
 }
+export interface StaffMemberRow {
+  userId: string;
+  fullName: string;
+  email: string;
+  phone: string | null;
+  roles: AppRole[];
+  joinedAt: string;
+  isSelf: boolean;
+}
+
+export interface StaffDirectory {
+  rows: StaffMemberRow[];
+  counts: Record<AppRole, number>;
+}
