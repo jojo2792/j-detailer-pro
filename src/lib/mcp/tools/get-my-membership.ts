@@ -30,7 +30,11 @@ export default defineTool({
       };
     }
 
-    const plan = data.plan as { monthly_wash_limit: number; monthly_interior_limit: number } | null;
+    const rawPlan: unknown = data.plan;
+    const plan = (Array.isArray(rawPlan) ? rawPlan[0] : rawPlan) as
+      | { monthly_wash_limit: number; monthly_interior_limit: number }
+      | null
+      | undefined;
     const membership = {
       ...data,
       washes_remaining: plan ? Math.max(plan.monthly_wash_limit - data.washes_used, 0) : null,
