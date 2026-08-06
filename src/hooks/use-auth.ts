@@ -37,6 +37,11 @@ export interface SignUpInput {
 
 export function useEmailPasswordAuth(redirectPath: string) {
   const navigate = useNavigate();
+  const isDefault = redirectPath === "/dashboard";
+  const go = () => {
+    if (isDefault) void navigate({ to: "/dashboard" });
+    else window.location.assign(redirectPath);
+  };
 
   const signIn = useMutation({
     mutationFn: async (input: { email: string; password: string }) => {
@@ -45,7 +50,7 @@ export function useEmailPasswordAuth(redirectPath: string) {
     },
     onSuccess: () => {
       toast.success("Welcome back.");
-      void navigate({ to: redirectPath });
+      go();
     },
     onError: (error) => toast.error(message(error)),
   });
@@ -56,7 +61,7 @@ export function useEmailPasswordAuth(redirectPath: string) {
         email: input.email,
         password: input.password,
         options: {
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo: `${window.location.origin}${redirectPath}`,
           data: { full_name: input.fullName, phone: input.phone ?? null },
         },
       });
@@ -66,7 +71,7 @@ export function useEmailPasswordAuth(redirectPath: string) {
     onSuccess: (data) => {
       if (data.session) {
         toast.success("Account created.");
-        void navigate({ to: redirectPath });
+        go();
       } else {
         toast.success("Check your email to confirm your account.");
       }
@@ -77,14 +82,14 @@ export function useEmailPasswordAuth(redirectPath: string) {
   const google = useMutation({
     mutationFn: async () => {
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+        redirect_uri: `${window.location.origin}${redirectPath}`,
       });
       if (result.error) throw result.error;
       return result;
     },
     onSuccess: (result) => {
       if (!("redirected" in result && result.redirected)) {
-        void navigate({ to: redirectPath });
+        go();
       }
     },
     onError: (error) => toast.error(message(error)),
