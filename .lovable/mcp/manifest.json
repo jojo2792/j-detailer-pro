@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://occunupnzbwhxyavsfal.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "j-detailer-pro",
+      "version": "0.1.0",
+      "title": "J Detailer Pro"
+    },
+    "tools": [
+      {
+        "name": "list_membership_plans",
+        "title": "List membership plans",
+        "description": "List J The Detailer membership plans with pricing, monthly limits and perks.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "include_inactive": {
+              "type": "boolean",
+              "description": "Include plans that are no longer offered."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_my_membership",
+        "title": "Get my membership",
+        "description": "Get the signed-in member's current membership: plan, status, billing cycle, renewal date and remaining washes/interior details this cycle.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_membership_history",
+        "title": "List membership history",
+        "description": "List the signed-in member's membership lifecycle events (subscribed, plan changes, pauses, renewals, cancellations), newest first.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "description": "How many events to return (1-50, default 20)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "set_auto_renew",
+        "title": "Set auto-renew",
+        "description": "Turn auto-renew on or off for the signed-in member's active membership.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "auto_renew": {
+              "type": "boolean",
+              "description": "True to auto-renew each cycle, false to stop."
+            }
+          },
+          "required": [
+            "auto_renew"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

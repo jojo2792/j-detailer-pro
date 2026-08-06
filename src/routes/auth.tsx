@@ -6,6 +6,10 @@ import { useAuth, useEmailPasswordAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/auth")({
   component: AuthPage,
+  validateSearch: (s: Record<string, unknown>): { next?: string } =>
+    typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//")
+      ? { next: s.next }
+      : {},
   head: () => ({
     meta: [
       { title: "Sign In or Create an Account | J The Detailer" },
@@ -26,11 +30,15 @@ function AuthPage() {
   const [phone, setPhone] = useState("");
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const { signIn, signUp, google } = useEmailPasswordAuth("/dashboard");
+  const { next } = Route.useSearch();
+  const target = next ?? "/dashboard";
+  const { signIn, signUp, google } = useEmailPasswordAuth(target);
 
   useEffect(() => {
-    if (isAuthenticated) void navigate({ to: "/dashboard", replace: true });
-  }, [isAuthenticated, navigate]);
+    if (!isAuthenticated) return;
+    if (next) window.location.replace(next);
+    else void navigate({ to: "/dashboard", replace: true });
+  }, [isAuthenticated, navigate, next]);
 
   const busy = signIn.isPending || signUp.isPending || google.isPending;
 
