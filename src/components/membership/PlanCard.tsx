@@ -50,11 +50,15 @@ export function PlanCard({
 
       <div className="mt-6 grid grid-cols-2 gap-3 rounded-lg border border-border/60 bg-background/40 p-4 text-center">
         <div>
-          <div className="font-display text-lg font-bold text-primary">{plan.monthlyWashLimit || "—"}</div>
+          <div className="font-display text-lg font-bold text-primary">
+            {plan.requiresQuote ? "Custom" : plan.monthlyWashLimit || "—"}
+          </div>
           <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Washes / mo</div>
         </div>
         <div>
-          <div className="font-display text-lg font-bold text-primary">{plan.monthlyInteriorLimit || "—"}</div>
+          <div className="font-display text-lg font-bold text-primary">
+            {plan.requiresQuote ? "Custom" : plan.monthlyInteriorLimit || "—"}
+          </div>
           <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Interiors / mo</div>
         </div>
         <div>
@@ -65,7 +69,16 @@ export function PlanCard({
           <div className="font-display text-lg font-bold text-primary">{plan.rewardMultiplier}×</div>
           <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Reward points</div>
         </div>
+        <div className="col-span-2 border-t border-border/60 pt-3">
+          <div className="font-display text-lg font-bold text-primary">
+            {plan.requiresQuote ? `${plan.vehicleLimit}+` : plan.vehicleLimit}
+          </div>
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+            {plan.vehicleLimit === 1 ? "Registered vehicle" : "Registered vehicles"}
+          </div>
+        </div>
       </div>
+
 
       <div className="mt-6 space-y-3 text-sm">
         {plan.features.map((f) => (
