@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { MembershipPanel } from "@/components/membership/MembershipPanel";
+import { MemberIdentityCard } from "@/components/membership/MemberIdentityCard";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { useAuth, useSignOut } from "@/hooks/use-auth";
 
@@ -42,7 +43,8 @@ function Dashboard() {
             Sign out
           </button>
         </div>
-        <div className="mt-10">
+        <div className="mt-10 space-y-6">
+          <MemberIdentityCard />
           <ErrorBoundary title="Your membership didn't load">
             <MembershipPanel />
           </ErrorBoundary>

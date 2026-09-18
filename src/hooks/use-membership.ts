@@ -87,6 +87,7 @@ export function useMembership() {
     membership: query.data?.membership ?? null,
     history: query.data?.history ?? [],
     isLoading: query.isLoading,
+    isError: query.isError,
     error: query.error,
     refetch: query.refetch,
     isMutating,
