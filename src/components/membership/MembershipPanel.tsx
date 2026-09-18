@@ -1,11 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { CalendarClock, History, Pause, Play, RefreshCw, XCircle } from "lucide-react";
+import { AlertTriangle, CalendarClock, Pause, Play, RefreshCw, XCircle } from "lucide-react";
 import { useState } from "react";
 import { MembershipStatusBadge } from "@/components/membership/MembershipStatusBadge";
+import { MembershipHistoryList } from "@/components/membership/MembershipHistoryList";
+import { CancelMembershipDialog } from "@/components/membership/CancelMembershipDialog";
 import { UsageMeter } from "@/components/membership/UsageMeter";
 import { PlanCard } from "@/components/membership/PlanCard";
 import { SkeletonCard } from "@/components/ui/skeleton-card";
-import { formatDate, formatDateTime, formatTTD } from "@/lib/format";
+import { formatDate, formatTTD } from "@/lib/format";
 import { useMembership, useMembershipPlans } from "@/hooks/use-membership";
 
 export function MembershipPanel() {
@@ -13,6 +15,8 @@ export function MembershipPanel() {
     membership,
     history,
     isLoading,
+    isError,
+    refetch,
     isMutating,
     subscribe,
     changePlan,
@@ -23,11 +27,32 @@ export function MembershipPanel() {
   } = useMembership();
   const plansQuery = useMembershipPlans();
   const [showPlans, setShowPlans] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
 
   if (isLoading) return <SkeletonCard rows={5} />;
 
+  if (isError) {
+    return (
+      <section className="rounded-2xl border border-destructive/40 bg-destructive/5 p-8 text-center">
+        <AlertTriangle className="mx-auto h-6 w-6 text-destructive" />
+        <h2 className="mt-3 font-display text-xl font-bold">Your membership didn't load</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          This is usually temporary. Your plan and allowances are safe.
+        </p>
+        <button
+          type="button"
+          onClick={() => void refetch()}
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-gold px-6 py-3 text-xs font-semibold uppercase tracking-widest text-primary-foreground shadow-gold"
+        >
+          <RefreshCw className="h-3.5 w-3.5" /> Try again
+        </button>
+      </section>
+    );
+  }
+
   const plans = (plansQuery.data ?? []).filter((p) => !p.requiresQuote);
   const isLive = membership && ["active", "paused", "pending"].includes(membership.status);
+  const isFleet = membership?.plan.requiresQuote ?? false;
 
   return (
     <div className="space-y-8">
@@ -40,7 +65,9 @@ export function MembershipPanel() {
               </div>
               <h2 className="mt-2 font-display text-3xl font-bold">
                 {membership.plan.name}{" "}
-                <span className="text-gradient-gold">{formatTTD(membership.plan.monthlyPriceCents)}/mo</span>
+                <span className="text-gradient-gold">
+                  {isFleet ? "Custom" : `${formatTTD(membership.plan.monthlyPriceCents)}/mo`}
+                </span>
               </h2>
             </div>
             <MembershipStatusBadge status={membership.status} />
@@ -59,13 +86,28 @@ export function MembershipPanel() {
             />
           </div>
 
-          <dl className="mt-8 grid gap-4 text-sm sm:grid-cols-3">
+          <dl className="mt-8 grid gap-4 text-sm sm:grid-cols-2 lg:grid-cols-5">
+            <div className="rounded-xl border border-border/60 bg-background/40 p-4">
+              <dt className="text-[10px] uppercase tracking-widest text-muted-foreground">Current cycle</dt>
+              <dd className="mt-1 font-display font-semibold">
+                {formatDate(membership.currentPeriodStart)} – {formatDate(membership.currentPeriodEnd)}
+              </dd>
+            </div>
             <div className="rounded-xl border border-border/60 bg-background/40 p-4">
               <dt className="text-[10px] uppercase tracking-widest text-muted-foreground">Renews</dt>
               <dd className="mt-1 font-display font-semibold">
                 {formatDate(membership.renewalDate)}
                 <span className="ml-1 text-xs text-muted-foreground">
                   ({membership.daysUntilRenewal} days)
+                </span>
+              </dd>
+            </div>
+            <div className="rounded-xl border border-border/60 bg-background/40 p-4">
+              <dt className="text-[10px] uppercase tracking-widest text-muted-foreground">Vehicles</dt>
+              <dd className="mt-1 font-display font-semibold">
+                {isFleet ? `${membership.plan.vehicleLimit}+` : membership.plan.vehicleLimit}
+                <span className="ml-1 text-xs text-muted-foreground">
+                  {membership.plan.vehicleLimit === 1 && !isFleet ? "vehicle" : "vehicles"}
                 </span>
               </dd>
             </div>
@@ -136,26 +178,44 @@ export function MembershipPanel() {
               <button
                 type="button"
                 disabled={isMutating}
-                onClick={() => cancel(false)}
+                onClick={() => setConfirmCancel(true)}
                 className="inline-flex items-center gap-2 rounded-full border border-destructive/40 px-6 py-3 text-xs font-semibold uppercase tracking-widest text-destructive hover:bg-destructive/10 disabled:opacity-50"
               >
                 <XCircle className="h-3.5 w-3.5" /> Cancel
               </button>
             )}
           </div>
+
+          <CancelMembershipDialog
+            open={confirmCancel}
+            periodEnd={membership.currentPeriodEnd}
+            isMutating={isMutating}
+            onClose={() => setConfirmCancel(false)}
+            onConfirm={(immediate) => {
+              cancel(immediate);
+              setConfirmCancel(false);
+            }}
+          />
         </section>
       ) : (
         <section className="rounded-2xl border border-border bg-card p-8 text-center">
-          <div className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">No active plan</div>
+          <div className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
+            {membership ? "Membership ended" : "No active plan"}
+          </div>
           <h2 className="mt-2 font-display text-2xl font-bold">
-            Join a membership and keep your vehicle showroom-ready.
+            {membership
+              ? "Your membership is no longer active."
+              : "Join a membership and keep your vehicle showroom-ready."}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Recurring washes, member discounts and multiplied reward points.
+            {membership
+              ? "Rejoin below to restore your washes, discounts and reward multiplier right away."
+              : "Recurring washes, member discounts and multiplied reward points."}
           </p>
           {membership && (
             <p className="mt-4 text-xs text-muted-foreground">
               Previous plan: {membership.plan.name} · {membership.status}
+              {membership.cancelledAt ? ` · ended ${formatDate(membership.cancelledAt)}` : ""}
             </p>
           )}
         </section>
@@ -164,7 +224,7 @@ export function MembershipPanel() {
       {(showPlans || !isLive) && (
         <section>
           <h3 className="font-display text-xl font-bold">
-            {isLive ? "Switch your plan" : "Choose your plan"}
+            {isLive ? "Switch your plan" : membership ? "Rejoin with a plan" : "Choose your plan"}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
             Upgrades apply right away. Downgrades take effect at your next renewal so you keep what you paid
@@ -190,27 +250,7 @@ export function MembershipPanel() {
         </section>
       )}
 
-      <section className="rounded-2xl border border-border bg-card p-8">
-        <div className="flex items-center gap-2">
-          <History className="h-4 w-4 text-primary" />
-          <h3 className="font-display text-lg font-bold">Membership activity</h3>
-        </div>
-        {history.length === 0 ? (
-          <p className="mt-4 text-sm text-muted-foreground">No membership activity yet.</p>
-        ) : (
-          <ul className="mt-4 divide-y divide-border">
-            {history.map((entry) => (
-              <li key={entry.id} className="flex flex-wrap items-baseline justify-between gap-2 py-3 text-sm">
-                <div>
-                  <span className="font-semibold capitalize">{entry.event.replace(/_/g, " ")}</span>
-                  {entry.note && <span className="ml-2 text-muted-foreground">{entry.note}</span>}
-                </div>
-                <span className="text-xs text-muted-foreground">{formatDateTime(entry.createdAt)}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <MembershipHistoryList history={history} />
     </div>
   );
 }
