@@ -14,6 +14,103 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          address_line: string
+          base_price_cents: number
+          cancelled_at: string | null
+          city: string
+          contact_name: string
+          contact_phone: string
+          created_at: string
+          currency: string
+          discount_percentage: number
+          duration_minutes: number
+          id: string
+          membership_id: string | null
+          notes: string | null
+          reference: string
+          scheduled_at: string
+          service_id: string
+          status: Database["public"]["Enums"]["booking_status"]
+          total_price_cents: number
+          updated_at: string
+          user_id: string
+          vehicle_id: string | null
+          vehicle_summary: string | null
+        }
+        Insert: {
+          address_line: string
+          base_price_cents?: number
+          cancelled_at?: string | null
+          city: string
+          contact_name: string
+          contact_phone: string
+          created_at?: string
+          currency?: string
+          discount_percentage?: number
+          duration_minutes?: number
+          id?: string
+          membership_id?: string | null
+          notes?: string | null
+          reference?: string
+          scheduled_at: string
+          service_id: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          total_price_cents?: number
+          updated_at?: string
+          user_id: string
+          vehicle_id?: string | null
+          vehicle_summary?: string | null
+        }
+        Update: {
+          address_line?: string
+          base_price_cents?: number
+          cancelled_at?: string | null
+          city?: string
+          contact_name?: string
+          contact_phone?: string
+          created_at?: string
+          currency?: string
+          discount_percentage?: number
+          duration_minutes?: number
+          id?: string
+          membership_id?: string | null
+          notes?: string | null
+          reference?: string
+          scheduled_at?: string
+          service_id?: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          total_price_cents?: number
+          updated_at?: string
+          user_id?: string
+          vehicle_id?: string | null
+          vehicle_summary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       membership_history: {
         Row: {
           created_at: string
@@ -255,6 +352,57 @@ export type Database = {
         }
         Relationships: []
       }
+      services: {
+        Row: {
+          base_price_cents: number
+          category: string
+          created_at: string
+          currency: string
+          description: string | null
+          duration_minutes: number
+          id: string
+          includes: Json
+          is_active: boolean
+          membership_covered: boolean
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          base_price_cents: number
+          category?: string
+          created_at?: string
+          currency?: string
+          description?: string | null
+          duration_minutes?: number
+          id?: string
+          includes?: Json
+          is_active?: boolean
+          membership_covered?: boolean
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          base_price_cents?: number
+          category?: string
+          created_at?: string
+          currency?: string
+          description?: string | null
+          duration_minutes?: number
+          id?: string
+          includes?: Json
+          is_active?: boolean
+          membership_covered?: boolean
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -273,6 +421,51 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      vehicles: {
+        Row: {
+          color: string | null
+          created_at: string
+          id: string
+          is_default: boolean
+          make: string
+          model: string
+          notes: string | null
+          plate: string | null
+          updated_at: string
+          user_id: string
+          vehicle_type: string
+          year: number | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          make: string
+          model: string
+          notes?: string | null
+          plate?: string | null
+          updated_at?: string
+          user_id: string
+          vehicle_type?: string
+          year?: number | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          make?: string
+          model?: string
+          notes?: string | null
+          plate?: string | null
+          updated_at?: string
+          user_id?: string
+          vehicle_type?: string
+          year?: number | null
         }
         Relationships: []
       }
@@ -367,6 +560,12 @@ export type Database = {
     }
     Enums: {
       app_role: "customer" | "technician" | "admin"
+      booking_status:
+        | "pending"
+        | "confirmed"
+        | "in_progress"
+        | "completed"
+        | "cancelled"
       membership_event:
         | "created"
         | "activated"
@@ -514,6 +713,13 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["customer", "technician", "admin"],
+      booking_status: [
+        "pending",
+        "confirmed",
+        "in_progress",
+        "completed",
+        "cancelled",
+      ],
       membership_event: [
         "created",
         "activated",
