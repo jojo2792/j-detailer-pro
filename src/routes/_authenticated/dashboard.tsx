@@ -43,7 +43,8 @@ function Dashboard() {
             Sign out
           </button>
         </div>
-        <div className="mt-10">
+        <div className="mt-10 space-y-6">
+          <MemberIdentityCard />
           <ErrorBoundary title="Your membership didn't load">
             <MembershipPanel />
           </ErrorBoundary>
