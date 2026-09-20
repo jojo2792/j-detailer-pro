@@ -459,7 +459,6 @@ export function BookingWizard() {
             </p>
             <Link
               to="/auth"
-              search={{ redirect: "/book" }}
               className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-gold px-7 py-3 text-xs font-semibold uppercase tracking-widest text-primary-foreground shadow-gold"
             >
               Sign in to book
