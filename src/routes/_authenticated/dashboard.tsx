@@ -3,6 +3,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { MembershipPanel } from "@/components/membership/MembershipPanel";
 import { MemberIdentityCard } from "@/components/membership/MemberIdentityCard";
+import { MyAppointments } from "@/components/booking/MyAppointments";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { useAuth, useSignOut } from "@/hooks/use-auth";
 
@@ -47,6 +48,9 @@ function Dashboard() {
           <MemberIdentityCard />
           <ErrorBoundary title="Your membership didn't load">
             <MembershipPanel />
+          </ErrorBoundary>
+          <ErrorBoundary title="Your appointments didn't load">
+            <MyAppointments />
           </ErrorBoundary>
         </div>
       </section>
