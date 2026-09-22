@@ -50,6 +50,9 @@ function Dashboard() {
           <ErrorBoundary title="Your membership didn't load">
             <MembershipPanel />
           </ErrorBoundary>
+          <ErrorBoundary title="Your points didn't load">
+            <RewardsSummary />
+          </ErrorBoundary>
           <ErrorBoundary title="Your appointments didn't load">
             <MyAppointments />
           </ErrorBoundary>
