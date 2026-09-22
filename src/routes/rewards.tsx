@@ -2,6 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { RewardsBalancePanel } from "@/components/rewards/RewardsBalancePanel";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { useRewardCatalog, useRewardEarnRates } from "@/hooks/use-rewards";
 
 export const Route = createFileRoute("/rewards")({
   component: Rewards,
@@ -9,27 +12,18 @@ export const Route = createFileRoute("/rewards")({
     meta: [
       { title: "J Rewards — Earn Points With Every Detail | J The Detailer" },
       { name: "description", content: "Every completed service earns points automatically. Redeem for free washes, engine bay cleaning, interior shampoo, and service credits." },
+      { property: "og:title", content: "J Rewards | J The Detailer" },
+      { property: "og:description", content: "Track your points balance, activity and available rewards." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
 });
 
-const earn = [
-  { service: "Exterior Detail", pts: 100 },
-  { service: "Interior Detail", pts: 150 },
-  { service: "Premium Detail", pts: 250 },
-  { service: "Paint Correction", pts: 750 },
-  { service: "Ceramic Coating", pts: 1000 },
-];
-
-const redeem = [
-  { reward: "Tire Shine Upgrade", pts: 500 },
-  { reward: "Free Engine Bay Cleaning", pts: 1000 },
-  { reward: "Free Interior Shampoo", pts: 2000 },
-  { reward: "Free Maintenance Wash", pts: 3000 },
-  { reward: "TT$250 Service Credit", pts: 5000 },
-];
-
 function Rewards() {
+  const earnRates = useRewardEarnRates();
+  const catalog = useRewardCatalog();
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -47,31 +41,50 @@ function Rewards() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6">
+      <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+        <ErrorBoundary title="Your points didn't load">
+          <RewardsBalancePanel />
+        </ErrorBoundary>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
         <div className="grid gap-8 md:grid-cols-2">
           <div className="rounded-2xl border border-border bg-card p-8">
             <div className="text-xs font-semibold uppercase tracking-widest text-primary">Earn</div>
             <h2 className="mt-2 font-display text-2xl font-bold">Points per service</h2>
-            <ul className="mt-6 divide-y divide-border">
-              {earn.map((e) => (
-                <li key={e.service} className="flex items-center justify-between py-3 text-sm">
-                  <span>{e.service}</span>
-                  <span className="font-display font-bold text-primary">+{e.pts}</span>
-                </li>
-              ))}
-            </ul>
+            {earnRates.isLoading ? (
+              <p className="mt-6 text-sm text-muted-foreground">Loading…</p>
+            ) : (
+              <ul className="mt-6 divide-y divide-border">
+                {(earnRates.data ?? []).map((e) => (
+                  <li key={e.slug} className="flex items-center justify-between py-3 text-sm">
+                    <span>{e.name}</span>
+                    <span className="font-display font-bold text-primary">+{e.points}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="mt-6 text-xs text-muted-foreground">
+              Members earn multiplied points — up to 3x on Platinum.
+            </p>
           </div>
           <div className="rounded-2xl border border-primary/40 bg-gradient-to-b from-primary/10 to-transparent p-8">
             <div className="text-xs font-semibold uppercase tracking-widest text-primary">Redeem</div>
             <h2 className="mt-2 font-display text-2xl font-bold">Reward tiers</h2>
-            <ul className="mt-6 divide-y divide-border">
-              {redeem.map((r) => (
-                <li key={r.reward} className="flex items-center justify-between py-3 text-sm">
-                  <span>{r.reward}</span>
-                  <span className="font-display font-bold text-primary">{r.pts.toLocaleString()} pts</span>
-                </li>
-              ))}
-            </ul>
+            {catalog.isLoading ? (
+              <p className="mt-6 text-sm text-muted-foreground">Loading…</p>
+            ) : (
+              <ul className="mt-6 divide-y divide-border">
+                {(catalog.data ?? []).map((r) => (
+                  <li key={r.id} className="flex items-center justify-between py-3 text-sm">
+                    <span>{r.name}</span>
+                    <span className="font-display font-bold text-primary">
+                      {r.pointsCost.toLocaleString()} pts
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
         <div className="mt-12 text-center">
