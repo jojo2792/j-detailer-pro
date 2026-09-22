@@ -352,6 +352,93 @@ export type Database = {
         }
         Relationships: []
       }
+      reward_catalog: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          points_cost: number
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          points_cost: number
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          points_cost?: number
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reward_transactions: {
+        Row: {
+          booking_id: string | null
+          catalog_id: string | null
+          created_at: string
+          description: string
+          id: string
+          kind: string
+          multiplier: number
+          points: number
+          user_id: string
+        }
+        Insert: {
+          booking_id?: string | null
+          catalog_id?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          kind: string
+          multiplier?: number
+          points: number
+          user_id: string
+        }
+        Update: {
+          booking_id?: string | null
+          catalog_id?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          kind?: string
+          multiplier?: number
+          points?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reward_transactions_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reward_transactions_catalog_id_fkey"
+            columns: ["catalog_id"]
+            isOneToOne: false
+            referencedRelation: "reward_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       services: {
         Row: {
           base_price_cents: number
@@ -365,6 +452,7 @@ export type Database = {
           is_active: boolean
           membership_covered: boolean
           name: string
+          reward_points: number
           slug: string
           sort_order: number
           updated_at: string
@@ -381,6 +469,7 @@ export type Database = {
           is_active?: boolean
           membership_covered?: boolean
           name: string
+          reward_points?: number
           slug: string
           sort_order?: number
           updated_at?: string
@@ -397,6 +486,7 @@ export type Database = {
           is_active?: boolean
           membership_covered?: boolean
           name?: string
+          reward_points?: number
           slug?: string
           sort_order?: number
           updated_at?: string
@@ -492,6 +582,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      my_reward_balance: { Args: never; Returns: number }
       record_membership_usage: {
         Args: { _kind: string; _membership_id: string; _quantity?: number }
         Returns: {
@@ -524,7 +615,9 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      redeem_reward: { Args: { _catalog_id: string }; Returns: number }
       reset_due_membership_cycles: { Args: never; Returns: number }
+      reward_balance: { Args: { _user_id: string }; Returns: number }
       sync_membership_cycle: {
         Args: { _membership_id: string }
         Returns: {

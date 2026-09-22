@@ -8,6 +8,13 @@
       "when": 1789761129751,
       "tag": "0000_create_booking_engine",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790121292476,
+      "tag": "0001_create_rewards_engine",
+      "breakpoints": true
     }
   ]
 }
