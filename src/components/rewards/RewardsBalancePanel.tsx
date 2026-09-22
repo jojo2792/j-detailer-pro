@@ -35,7 +35,6 @@ export function RewardsBalancePanel() {
         </p>
         <Link
           to="/auth"
-          search={{ redirect: "/rewards" }}
           className="mt-6 inline-flex rounded-full bg-gradient-gold px-7 py-3 text-xs font-semibold uppercase tracking-widest text-primary-foreground shadow-gold"
         >
           Sign in
