@@ -33,6 +33,7 @@ export type Database = {
           scheduled_at: string
           service_id: string
           status: Database["public"]["Enums"]["booking_status"]
+          technician_id: string | null
           total_price_cents: number
           updated_at: string
           user_id: string
@@ -57,6 +58,7 @@ export type Database = {
           scheduled_at: string
           service_id: string
           status?: Database["public"]["Enums"]["booking_status"]
+          technician_id?: string | null
           total_price_cents?: number
           updated_at?: string
           user_id: string
@@ -81,6 +83,7 @@ export type Database = {
           scheduled_at?: string
           service_id?: string
           status?: Database["public"]["Enums"]["booking_status"]
+          technician_id?: string | null
           total_price_cents?: number
           updated_at?: string
           user_id?: string
