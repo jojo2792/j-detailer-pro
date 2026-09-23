@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
-import { ShieldAlert, Users2 } from "lucide-react";
+import { CalendarCheck, ShieldAlert, Users2 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
@@ -60,6 +60,12 @@ function AdminCrm() {
             <h1 className="mt-2 truncate font-display text-3xl font-bold sm:text-4xl">Admin CRM</h1>
           </div>
           <div className="flex shrink-0 items-center gap-4">
+            <Link
+              to="/staff"
+              className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-semibold uppercase tracking-widest text-foreground/80 transition-colors hover:border-primary hover:text-primary"
+            >
+              <CalendarCheck className="h-4 w-4" aria-hidden /> Jobs
+            </Link>
             {Boolean(permissions?.canManageMembers) && (
               <Link
                 to="/team"
