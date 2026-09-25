@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useMyBookings, useSlots } from "@/hooks/use-booking";
+import { useAuth } from "@/hooks/use-auth";
 import { formatDateTime, formatTTD } from "@/lib/format";
 import type { BookingRecord } from "@/types/booking";
 
@@ -60,7 +61,7 @@ function RescheduleRow({
 }
 
 export function MyAppointments() {
-  const { bookings, isLoading, isError, cancel, reschedule } = useMyBookings();
+  const { bookings, isLoading, isError, cancel, reschedule } = useMyBookings(Boolean(useAuth().user));
   const [movingId, setMovingId] = useState<string | null>(null);
 
   if (isLoading) {

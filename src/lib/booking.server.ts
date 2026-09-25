@@ -105,7 +105,7 @@ export async function loadSlots(date: string): Promise<SlotOption[]> {
 async function loadMembershipBenefit(supabase: Client, userId: string) {
   const { data, error } = await supabase
     .from("memberships")
-    .select("id, plan_id, status, membership_plans(name, discount_percentage, reward_multiplier)")
+    .select("id, plan_id, status, membership_plans!memberships_plan_id_fkey(name, discount_percentage, reward_multiplier)")
     .eq("user_id", userId)
     .in("status", ["active", "pending"])
     .maybeSingle();

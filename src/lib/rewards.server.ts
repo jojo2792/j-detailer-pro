@@ -64,7 +64,7 @@ export async function loadMyRewards(supabase: Client, userId: string): Promise<M
 
   const { data: membership, error: membershipError } = await supabase
     .from("memberships")
-    .select("status, membership_plans(name, reward_multiplier)")
+    .select("status, membership_plans!memberships_plan_id_fkey(name, reward_multiplier)")
     .eq("user_id", userId)
     .in("status", ["active", "pending"])
     .maybeSingle();
