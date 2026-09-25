@@ -325,6 +325,53 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          body: string
+          booking_id: string | null
+          channel: string
+          created_at: string
+          delivery_status: string
+          id: string
+          kind: string
+          read_at: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          booking_id?: string | null
+          channel?: string
+          created_at?: string
+          delivery_status?: string
+          id?: string
+          kind: string
+          read_at?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          booking_id?: string | null
+          channel?: string
+          created_at?: string
+          delivery_status?: string
+          id?: string
+          kind?: string
+          read_at?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -585,6 +632,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      mark_my_notifications_read: { Args: { _ids?: string[] }; Returns: number }
       my_reward_balance: { Args: never; Returns: number }
       record_membership_usage: {
         Args: { _kind: string; _membership_id: string; _quantity?: number }

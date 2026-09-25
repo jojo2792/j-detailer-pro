@@ -5,6 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { StaffBoard } from "@/components/staff/StaffBoard";
 import { useStaffAccess } from "@/hooks/use-staff";
+import { AdminNotificationsFeed } from "@/components/notifications/NotificationsPanel";
 
 export const Route = createFileRoute("/_authenticated/staff")({
   component: StaffPortal,
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/_authenticated/staff")({
 });
 
 function StaffPortal() {
-  const { isStaff, isLoading, access } = useStaffAccess();
+  const { isStaff, isLoading, isError, access } = useStaffAccess();
 
   return (
     <div className="min-h-screen">
@@ -44,18 +45,27 @@ function StaffPortal() {
             <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-6 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin text-primary" aria-hidden /> Checking your access…
             </div>
+          ) : isError ? (
+            <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
+              We couldn&apos;t check your staff access right now. Refresh the page to try again.
+            </div>
           ) : !isStaff ? (
             <div className="rounded-2xl border border-destructive/40 bg-destructive/5 p-8 text-center">
               <ShieldAlert className="mx-auto h-8 w-8 text-destructive" aria-hidden />
               <h2 className="mt-4 font-display text-xl font-bold">Staff access only</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 This job board is limited to technician and admin accounts. Ask an administrator to grant
-                your role.
+                your role. Your account currently has customer access only.
               </p>
             </div>
           ) : (
             <ErrorBoundary title="The job board didn't load">
               <StaffBoard />
+              {access?.isAdmin ? (
+                <div className="mt-8">
+                  <AdminNotificationsFeed />
+                </div>
+              ) : null}
             </ErrorBoundary>
           )}
         </div>
