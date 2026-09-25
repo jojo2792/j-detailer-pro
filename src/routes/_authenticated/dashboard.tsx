@@ -6,6 +6,7 @@ import { MemberIdentityCard } from "@/components/membership/MemberIdentityCard";
 import { MyAppointments } from "@/components/booking/MyAppointments";
 import { RewardsSummary } from "@/components/rewards/RewardsSummary";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { NotificationsPanel } from "@/components/notifications/NotificationsPanel";
 import { useAuth, useSignOut } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -47,6 +48,9 @@ function Dashboard() {
         </div>
         <div className="mt-10 space-y-6">
           <MemberIdentityCard />
+          <ErrorBoundary title="Your notifications didn't load">
+            <NotificationsPanel />
+          </ErrorBoundary>
           <ErrorBoundary title="Your membership didn't load">
             <MembershipPanel />
           </ErrorBoundary>
