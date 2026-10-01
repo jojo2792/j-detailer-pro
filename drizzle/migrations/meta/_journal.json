@@ -29,6 +29,13 @@
       "when": 1790371574390,
       "tag": "0003_create_booking_notifications",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790854811195,
+      "tag": "0004_bootstrap_first_admin",
+      "breakpoints": true
     }
   ]
 }
