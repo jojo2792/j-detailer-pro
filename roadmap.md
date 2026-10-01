@@ -12,3 +12,7 @@
 - [x] Sprint 5: notifications (notifications table + RLS; DB trigger creates booking received / status change / cancelled / rescheduled notices; 48h upcoming reminders derived from bookings; dashboard panel with mark-read; admin feed on /staff). Email/SMS delivery not configured — notices are in-app only (delivery_status in_app_only)
 
 - 2026-10-01 re-validation: typecheck + build OK; /auth /dashboard /memberships /staff /admin /book /rewards load signed in with no browser errors; Premium plan shows 4 washes/1 interior/1 vehicle/15%/2x. Staff access still blocked only because no admin/technician role is assigned yet.
+
+## Private team login + first-admin bootstrap (2026-10-01)
+- Private route `/team-login` (noindex, not linked from any public page). Signs in with existing auth; admin → /admin, technician → /staff, others see "No team access" with a link to /dashboard. Signed-in staff are redirected automatically. /admin and /staff keep their own server + RLS role checks.
+- First admin: database function `bootstrap_first_admin(email)` — executable only by the backend service role (not by browsers/signed-in users). Refuses if any admin already exists; returns `already_admin` if re-run for the same person. The person must sign up first; the operator (Lovable agent) runs it once on the owner's explicit instruction. Later roles are managed in /team.
