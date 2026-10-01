@@ -10,3 +10,5 @@
 - [x] Fix: staff login diagnosed — auth + role checks work; no account holds technician/admin yet (both accounts are customers). /staff now distinguishes "access check failed" from "customer only". Needs owner to name first admin account
 - [x] Validate fixes: typecheck clean; signed-in member smoke test of /auth, /dashboard, /memberships, /staff, /admin, /book, /rewards — no browser errors; plans match authoritative allowances
 - [x] Sprint 5: notifications (notifications table + RLS; DB trigger creates booking received / status change / cancelled / rescheduled notices; 48h upcoming reminders derived from bookings; dashboard panel with mark-read; admin feed on /staff). Email/SMS delivery not configured — notices are in-app only (delivery_status in_app_only)
+
+- 2026-10-01 re-validation: typecheck + build OK; /auth /dashboard /memberships /staff /admin /book /rewards load signed in with no browser errors; Premium plan shows 4 washes/1 interior/1 vehicle/15%/2x. Staff access still blocked only because no admin/technician role is assigned yet.
