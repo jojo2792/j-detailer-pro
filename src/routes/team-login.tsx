@@ -4,6 +4,7 @@ import { Loader2, ShieldAlert, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { Logo } from "@/components/site/Logo";
+import { getStaffAccess } from "@/lib/staff.functions";
 
 export const Route = createFileRoute("/team-login")({
   component: TeamLogin,
@@ -22,13 +23,11 @@ export const Route = createFileRoute("/team-login")({
 
 type Phase = "idle" | "checking" | "denied";
 
-/** Reads the signed-in user's own roles (RLS: own rows only). Portals re-check server-side. */
-async function portalFor(userId: string): Promise<"/admin" | "/staff" | null> {
-  const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId);
-  if (error) throw error;
-  const roles = (data ?? []).map((r) => r.role);
-  if (roles.includes("admin")) return "/admin";
-  if (roles.includes("technician")) return "/staff";
+/** Server-side role check (same check the staff portal uses). Portals re-check on every request. */
+async function portalFor(_userId: string): Promise<"/admin" | "/staff" | null> {
+  const access = await getStaffAccess();
+  if (access.isAdmin) return "/admin";
+  if (access.isTechnician) return "/staff";
   return null;
 }
 
