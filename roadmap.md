@@ -18,3 +18,9 @@
 - First admin: database function `bootstrap_first_admin(email)` — executable only by the backend service role (not by browsers/signed-in users). Refuses if any admin already exists; returns `already_admin` if re-run for the same person. The person must sign up first; the operator (Lovable agent) runs it once on the owner's explicit instruction. Later roles are managed in /team.
 - Team login now uses the server-side staff access check (same as /staff) to decide the redirect.
 - First-admin setup steps (owner): 1) the intended admin signs up normally at /auth; 2) the owner tells the Lovable agent in chat which email to make admin; 3) the agent runs `select public.bootstrap_first_admin('<email>')` from the backend (service role only; browsers get "permission denied"); 4) the admin signs in at /team-login and grants technicians on /team.
+- [x] 2026-10-03 first admin set via bootstrap (owner-designated account); verified /team-login → /admin and /staff shows admin access.
+
+## Next (not yet defined by owner)
+- [ ] Live end-to-end check: book → staff status changes → notifications + points awarded once (creates real records; needs owner OK)
+- [ ] Payments (Stripe) — only when requested
+- [ ] Email/SMS delivery for notifications — needs provider choice
