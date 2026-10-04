@@ -31,3 +31,5 @@
 - [x] Exactly one earn entry: 100 × 2 = 200 pts; balance 200 on /rewards and dashboard; job no longer offers completion.
 - [x] Fix: appointment times now always shown in Trinidad time (was showing the viewer's local time).
 - Note: Add-on Services earns 0 points, so Exterior Detail (lowest-priced service that earns points) was used.
+- [x] 2026-10-04 follow-up: dates (renewals, points history) also shown in Trinidad time, so late-evening entries no longer show the next day for viewers or the server elsewhere.
+- Remaining blockers: email/SMS notices (owner must choose a provider); online payments (only when requested).
