@@ -24,3 +24,10 @@
 - [ ] Live end-to-end check: book → staff status changes → notifications + points awarded once (creates real records; needs owner OK)
 - [ ] Payments (Stripe) — only when requested
 - [ ] Email/SMS delivery for notifications — needs provider choice
+
+## Live end-to-end validation — 2026-10-04 (complete)
+- [x] Booking AFBAE2E1 (Exterior Detail, Mon 5 Oct 9:00 AM, jojo_gettogirl@yahoo.com, Premium 15% → TT$153) → confirmed → in progress → completed via /staff.
+- [x] 4 notifications created (received, confirmed, in progress, completed); shown on dashboard.
+- [x] Exactly one earn entry: 100 × 2 = 200 pts; balance 200 on /rewards and dashboard; job no longer offers completion.
+- [x] Fix: appointment times now always shown in Trinidad time (was showing the viewer's local time).
+- Note: Add-on Services earns 0 points, so Exterior Detail (lowest-priced service that earns points) was used.

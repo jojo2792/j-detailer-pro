@@ -17,5 +17,7 @@ export function formatDateTime(iso: string): string {
     year: "numeric",
     hour: "numeric",
     minute: "2-digit",
+    // Appointments are booked in Trinidad time; show them that way on every device and on the server.
+    timeZone: "America/Port_of_Spain",
   });
 }
