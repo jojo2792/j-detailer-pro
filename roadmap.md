@@ -33,3 +33,4 @@
 - Note: Add-on Services earns 0 points, so Exterior Detail (lowest-priced service that earns points) was used.
 - [x] 2026-10-04 follow-up: dates (renewals, points history) also shown in Trinidad time, so late-evening entries no longer show the next day for viewers or the server elsewhere.
 - Remaining blockers: email/SMS notices (owner must choose a provider); online payments (only when requested).
+- [x] 2026-10-04: browser check from a Tokyo-time device — dashboard and rewards dates/times all show Trinidad time (booking 9:00 am, notices 11:27 am), no page errors.
