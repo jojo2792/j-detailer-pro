@@ -34,3 +34,7 @@
 - [x] 2026-10-04 follow-up: dates (renewals, points history) also shown in Trinidad time, so late-evening entries no longer show the next day for viewers or the server elsewhere.
 - Remaining blockers: email/SMS notices (owner must choose a provider); online payments (only when requested).
 - [x] 2026-10-04: browser check from a Tokyo-time device — dashboard and rewards dates/times all show Trinidad time (booking 9:00 am, notices 11:27 am), no page errors.
+
+## Security hardening — 2026-10-10
+- [x] Found: customers could edit their own bookings directly through the backend (bypassing the app) — e.g. set status to completed to award themselves points, or change the price. Fixed with database guard `guard_booking_write` (migration 0005): for non-staff, new bookings are forced to pending with price/discount recomputed from the service and their active plan; updates allow only cancel, or reschedule while pending/confirmed. Staff and backend calls unchanged.
+- [ ] Not yet live-tested with a customer-only account (would need sign-in approval for georgejoanna@gmail.com and creates a record).
