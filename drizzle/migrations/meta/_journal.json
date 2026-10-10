@@ -36,6 +36,13 @@
       "when": 1790854811195,
       "tag": "0004_bootstrap_first_admin",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791590910758,
+      "tag": "0005_guard_customer_booking_writes",
+      "breakpoints": true
     }
   ]
 }
