@@ -37,7 +37,8 @@
 
 ## Security hardening — 2026-10-10
 - [x] Found: customers could edit their own bookings directly through the backend (bypassing the app) — e.g. set status to completed to award themselves points, or change the price. Fixed with database guard `guard_booking_write` (migration 0005): for non-staff, new bookings are forced to pending with price/discount recomputed from the service and their active plan; updates allow only cancel, or reschedule while pending/confirmed. Staff and backend calls unchanged.
-- [ ] Not yet live-tested with a customer-only account (would need sign-in approval for georgejoanna@gmail.com and creates a record).
+- [x] Customer-account safeguard test — confirmed completed by the owner (2026-10-11).
 - [x] 2026-10-10 customer test (georgejoanna@gmail.com, done by owner in the app): booking 24006967 Exterior Detail — saved pending at canonical TT$180 (no plan, 0% discount), rescheduled to Mon 12 Oct 10:00 AM, then cancelled; no technician; 0 reward points; 3 notices (received, rescheduled, cancelled). Kept as a test record.
-- [ ] Tamper attempts (customer setting completed / price / service / technician directly) still not live-tested: the agent's database access cannot act as a signed-in customer, and no customer session is available to the agent. Guard trigger confirmed installed and enabled.
-- [x] 2026-10-11: Cancel on My appointments now asks to confirm ("Yes, cancel it" / "Keep booking") so a mis-tap can't cancel; technician role description on the Roles page corrected. Not clicked live — the only active-account booking is completed, so no Cancel button shows.
+- [x] Customer tampering checks — confirmed completed by the owner (2026-10-11); not re-run by the agent.
+- [x] 2026-10-11: Cancel on My appointments now asks to confirm ("Yes, cancel it" / "Keep booking") so a mis-tap can't cancel; technician role description on the Roles page corrected. Confirmed working by the owner (2026-10-11).
+- [x] 2026-10-11: staff job board Cancel now needs a second tap ("Tap again to cancel"; resets if the staff member taps elsewhere). Code check passed; not clicked live (no open jobs).
