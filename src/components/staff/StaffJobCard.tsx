@@ -42,6 +42,7 @@ interface Props {
 
 export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
   const [open, setOpen] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
   const actions = NEXT_ACTIONS[job.status];
   const canCancel = job.status === "pending" || job.status === "confirmed" || job.status === "in_progress";
 
@@ -147,10 +148,15 @@ export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
           <button
             type="button"
             disabled={busy}
-            onClick={() => onStatus("cancelled")}
+            onClick={() => {
+              if (!confirmCancel) return setConfirmCancel(true);
+              setConfirmCancel(false);
+              onStatus("cancelled");
+            }}
+            onBlur={() => setConfirmCancel(false)}
             className="inline-flex items-center gap-2 rounded-full border border-destructive/40 px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-destructive hover:bg-destructive/10 disabled:opacity-60"
           >
-            <XCircle className="h-3.5 w-3.5" aria-hidden /> Cancel
+            <XCircle className="h-3.5 w-3.5" aria-hidden /> {confirmCancel ? "Tap again to cancel" : "Cancel"}
           </button>
         )}
       </div>
