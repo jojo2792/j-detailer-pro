@@ -3,7 +3,7 @@ import type { AppRole, StaffMemberRow } from "@/types/admin";
 
 const ROLE_META: { role: AppRole; label: string; description: string; icon: typeof User }[] = [
   { role: "admin", label: "Admin", description: "Revenue, exports, role management", icon: ShieldCheck },
-  { role: "technician", label: "Technician", description: "Read-only member lists", icon: Wrench },
+  { role: "technician", label: "Technician", description: "Staff job board: view, claim and update appointments", icon: Wrench },
   { role: "customer", label: "Customer", description: "Standard member access", icon: User },
 ];
 

@@ -63,6 +63,7 @@ function RescheduleRow({
 export function MyAppointments() {
   const { bookings, isLoading, isError, cancel, reschedule } = useMyBookings(Boolean(useAuth().user));
   const [movingId, setMovingId] = useState<string | null>(null);
+  const [confirmId, setConfirmId] = useState<string | null>(null);
 
   if (isLoading) {
     return (
@@ -139,14 +140,33 @@ export function MyAppointments() {
                   >
                     {movingId === b.id ? "Close" : "Reschedule"}
                   </button>
-                  <button
-                    type="button"
-                    disabled={cancel.isPending}
-                    onClick={() => cancel.mutate(b.id)}
-                    className="rounded-full border border-border px-5 py-2 text-xs font-semibold uppercase tracking-widest text-destructive hover:border-destructive disabled:opacity-50"
-                  >
-                    Cancel
-                  </button>
+                  {confirmId === b.id ? (
+                    <>
+                      <button
+                        type="button"
+                        disabled={cancel.isPending}
+                        onClick={() => cancel.mutate(b.id, { onSettled: () => setConfirmId(null) })}
+                        className="rounded-full border border-destructive bg-destructive/10 px-5 py-2 text-xs font-semibold uppercase tracking-widest text-destructive disabled:opacity-50"
+                      >
+                        Yes, cancel it
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setConfirmId(null)}
+                        className="rounded-full border border-border px-5 py-2 text-xs font-semibold uppercase tracking-widest hover:border-primary hover:text-primary"
+                      >
+                        Keep booking
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setConfirmId(b.id)}
+                      className="rounded-full border border-border px-5 py-2 text-xs font-semibold uppercase tracking-widest text-destructive hover:border-destructive"
+                    >
+                      Cancel
+                    </button>
+                  )}
                 </div>
               ) : null}
 
