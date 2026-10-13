@@ -42,3 +42,4 @@
 - [x] Customer tampering checks — confirmed completed by the owner (2026-10-11); not re-run by the agent.
 - [x] 2026-10-11: Cancel on My appointments now asks to confirm ("Yes, cancel it" / "Keep booking") so a mis-tap can't cancel; technician role description on the Roles page corrected. Confirmed working by the owner (2026-10-11).
 - [x] 2026-10-11: staff job board Cancel now needs a second tap ("Tap again to cancel"; resets if the staff member taps elsewhere). Code check passed; not clicked live (no open jobs).
+- [x] 2026-10-13: staff "Mark completed" now needs a second tap ("Tap again to complete") since completing is final and awards points. Code check only; not clicked live (no open jobs).

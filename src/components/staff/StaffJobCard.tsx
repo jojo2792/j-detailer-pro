@@ -43,6 +43,7 @@ interface Props {
 export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
   const [open, setOpen] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
+  const [confirmComplete, setConfirmComplete] = useState(false);
   const actions = NEXT_ACTIONS[job.status];
   const canCancel = job.status === "pending" || job.status === "confirmed" || job.status === "in_progress";
 
@@ -115,22 +116,31 @@ export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
       )}
 
       <div className="mt-4 flex flex-wrap gap-2">
-        {actions.map((action) => (
-          <button
-            key={action.status}
-            type="button"
-            disabled={busy}
-            onClick={() => onStatus(action.status)}
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-gold px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground shadow-gold disabled:opacity-60"
-          >
-            {busy ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-            ) : (
-              <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
-            )}
-            {action.label}
-          </button>
-        ))}
+        {actions.map((action) => {
+          // Completing is irreversible and awards the customer's points, so it needs a second tap.
+          const needsConfirm = action.status === "completed";
+          return (
+            <button
+              key={action.status}
+              type="button"
+              disabled={busy}
+              onClick={() => {
+                if (needsConfirm && !confirmComplete) return setConfirmComplete(true);
+                setConfirmComplete(false);
+                onStatus(action.status);
+              }}
+              onBlur={() => setConfirmComplete(false)}
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-gold px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground shadow-gold disabled:opacity-60"
+            >
+              {busy ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+              ) : (
+                <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
+              )}
+              {needsConfirm && confirmComplete ? "Tap again to complete" : action.label}
+            </button>
+          );
+        })}
 
         {job.status !== "completed" && job.status !== "cancelled" && (
           <button
