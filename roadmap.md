@@ -21,7 +21,7 @@
 - [x] 2026-10-03 first admin set via bootstrap (owner-designated account); verified /team-login → /admin and /staff shows admin access.
 
 ## Next (not yet defined by owner)
-- [ ] Live end-to-end check: book → staff status changes → notifications + points awarded once (creates real records; needs owner OK)
+- [x] Live end-to-end check: book → staff status changes → notifications + points awarded once (completed 2026-10-04; evidence below)
 - [ ] Payments (Stripe) — only when requested
 - [ ] Email/SMS delivery for notifications — needs provider choice
 
@@ -43,3 +43,10 @@
 - [x] 2026-10-11: Cancel on My appointments now asks to confirm ("Yes, cancel it" / "Keep booking") so a mis-tap can't cancel; technician role description on the Roles page corrected. Confirmed working by the owner (2026-10-11).
 - [x] 2026-10-11: staff job board Cancel now needs a second tap ("Tap again to cancel"; resets if the staff member taps elsewhere). Code check passed; not clicked live (no open jobs).
 - [x] 2026-10-13: staff "Mark completed" now needs a second tap ("Tap again to complete") since completing is final and awards points. Code check only; not clicked live (no open jobs).
+
+## Customer booking status clarity — 2026-11-05
+- [x] New pending bookings now say "Booking received" and "Awaiting team confirmation" on the receipt and success alert instead of incorrectly claiming staff confirmation. Confirmed responses retain the booked receipt. No server, schema, membership, rewards, notification, payment, or production-record changes.
+- [x] Validation: TypeScript passed; focused ESLint passed with the existing formatting rule excluded; automatic preview build OK. Signed-in browser checks passed for pending desktop and confirmed mobile receipts/alerts using intercepted create responses (no create reached the backend). Live /dashboard still displays existing booking AFBAE2E1. /, /services, /book, /auth returned 200 with no private team-login links or browser errors.
+- Not re-tested live: submitting a real new booking or staff transitions; prohibited by this task's no-production-write constraint. Mocked receipt checks validate presentation only, not booking persistence or authorization.
+- Leaf-page social metadata completed for home/services during the required route inspection; no navigation or visible content changes.
+- Remaining: staff cancel/complete confirmations have not been exercised live; email/SMS and payments remain deferred.

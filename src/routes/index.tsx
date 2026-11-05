@@ -15,6 +15,10 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "J The Detailer — Mobile Detailing, Ceramic Coating & Membership Plans Trinidad" },
       { name: "description", content: "Premium automotive care delivered to you. Professional detailing, paint correction, and ceramic coating with flexible membership plans across Trinidad." },
+      { property: "og:title", content: "J The Detailer — Mobile Detailing Trinidad" },
+      { property: "og:description", content: "Premium mobile detailing, paint correction, ceramic coating and flexible membership plans across Trinidad." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
 });

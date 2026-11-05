@@ -9,6 +9,10 @@ export const Route = createFileRoute("/services")({
     meta: [
       { title: "Services — Mobile Detailing, Ceramic Coating & Paint Correction | J The Detailer" },
       { name: "description", content: "Full menu of professional car detailing services in Trinidad: exterior, interior, premium full detail, paint correction, ceramic coating and more." },
+      { property: "og:title", content: "Detailing Services | J The Detailer" },
+      { property: "og:description", content: "Explore exterior and interior detailing, paint correction, ceramic coating and add-on services in Trinidad." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
 });

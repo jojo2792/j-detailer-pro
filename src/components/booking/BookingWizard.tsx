@@ -98,7 +98,14 @@ export function BookingWizard() {
     return (
       <div className={`${cardBase} text-center`} role="status" aria-live="polite">
         <CheckCircle2 className="mx-auto h-10 w-10 text-primary" aria-hidden />
-        <h2 className="mt-4 font-display text-2xl font-bold">You're booked.</h2>
+        <h2 className="mt-4 font-display text-2xl font-bold">
+          {confirmed.status === "pending" ? "Booking received." : "You're booked."}
+        </h2>
+        {confirmed.status === "pending" ? (
+          <p className="mt-2 text-sm font-semibold text-primary">
+            Awaiting team confirmation.
+          </p>
+        ) : null}
         <p className="mt-2 text-sm text-muted-foreground">
           {confirmed.serviceName} · {formatDateTime(confirmed.scheduledAt)}
         </p>
