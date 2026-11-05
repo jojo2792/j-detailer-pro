@@ -39,7 +39,11 @@ export function useCreateBooking(onDone?: (booking: BookingRecord) => void) {
   return useMutation({
     mutationFn: (input: NewBookingInput) => create({ data: input }),
     onSuccess: (booking) => {
-      toast.success(`Appointment confirmed — reference ${booking.reference}.`);
+      toast.success(
+        booking.status === "pending"
+          ? `Booking received — awaiting team confirmation. Reference ${booking.reference}.`
+          : `Booking saved — reference ${booking.reference}.`,
+      );
       void queryClient.invalidateQueries({ queryKey: bookingKeys.mine });
       void queryClient.invalidateQueries({ queryKey: ["booking", "slots"] });
       void queryClient.invalidateQueries({ queryKey: bookingKeys.vehicles });
