@@ -45,7 +45,8 @@
 - [x] 2026-10-13: staff "Mark completed" now needs a second tap ("Tap again to complete") since completing is final and awards points. Code check only; not clicked live (no open jobs).
 
 ## Customer booking status clarity — 2026-11-05
-- [ ] Validate: new pending bookings now say "Booking received" and "Awaiting team confirmation" on the receipt and success alert instead of incorrectly claiming staff confirmation. Confirmed responses retain the booked receipt. No server, schema, membership, rewards, notification, payment, or production-record changes.
-- [ ] Check preview compilation and booking/dashboard feedback without creating bookings; record mocked versus live coverage explicitly.
+- [x] New pending bookings now say "Booking received" and "Awaiting team confirmation" on the receipt and success alert instead of incorrectly claiming staff confirmation. Confirmed responses retain the booked receipt. No server, schema, membership, rewards, notification, payment, or production-record changes.
+- [x] Validation: TypeScript passed; focused ESLint passed with the existing formatting rule excluded; automatic preview build OK. Signed-in browser checks passed for pending desktop and confirmed mobile receipts/alerts using intercepted create responses (no create reached the backend). Live /dashboard still displays existing booking AFBAE2E1. /, /services, /book, /auth returned 200 with no private team-login links or browser errors.
+- Not re-tested live: submitting a real new booking or staff transitions; prohibited by this task's no-production-write constraint. Mocked receipt checks validate presentation only, not booking persistence or authorization.
 - Leaf-page social metadata completed for home/services during the required route inspection; no navigation or visible content changes.
 - Remaining: staff cancel/complete confirmations have not been exercised live; email/SMS and payments remain deferred.
