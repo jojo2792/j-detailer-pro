@@ -50,3 +50,9 @@
 - Not re-tested live: submitting a real new booking or staff transitions; prohibited by this task's no-production-write constraint. Mocked receipt checks validate presentation only, not booking persistence or authorization.
 - Leaf-page social metadata completed for home/services during the required route inspection; no navigation or visible content changes.
 - Remaining: staff cancel/complete confirmations have not been exercised live; email/SMS and payments remain deferred.
+
+## My Appointments lifecycle status display — 2026-11-07
+- [x] Each booking on My appointments now shows a 4-step progress bar (Awaiting confirmation → Confirmed → In progress → Completed) with the current step highlighted, plus a one-line explanation of what the status means. Cancelled bookings show a red "Cancelled" marker instead of the bar. Front-end only; uses existing status values and data; no schema, backend, rewards, notification, or timezone changes.
+- [x] Validation: TypeScript passed. Signed-in browser check on /dashboard showed booking AFBAE2E1 (completed) with all four steps lit and the "All done" helper line; no page errors.
+- Not tested live: pending/confirmed/in-progress rendering (no booking currently in those states; no new bookings created per constraints) and the cancelled marker (the cancelled test booking 24006967 belongs to the customer account, not the owner account used for the check). Cancelled rendering is code-verified only.
+- Remaining: staff cancel/complete confirmations still not exercised live; email/SMS and payments remain deferred.
