@@ -187,6 +187,9 @@ export function MyAppointments() {
                 </div>
               </div>
 
+              <LifecycleSteps status={b.status} />
+              <p className="mt-2 text-xs text-muted-foreground">{STATUS_HELP[b.status]}</p>
+
               {changeable ? (
                 <div className="mt-4 flex flex-wrap gap-2">
                   <button
