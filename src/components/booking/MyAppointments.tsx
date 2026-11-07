@@ -13,6 +13,62 @@ const STATUS_LABEL: Record<BookingRecord["status"], string> = {
   cancelled: "Cancelled",
 };
 
+const STATUS_HELP: Record<BookingRecord["status"], string> = {
+  pending: "We've received your booking and our team will confirm it shortly.",
+  confirmed: "Your appointment is locked in. We'll see you then.",
+  in_progress: "Your detailer is on the job right now.",
+  completed: "All done. Thanks for riding with J THE DETAILER.",
+  cancelled: "This booking was cancelled.",
+};
+
+const LIFECYCLE_STEPS = ["pending", "confirmed", "in_progress", "completed"] as const;
+
+function LifecycleSteps({ status }: { status: BookingRecord["status"] }) {
+  if (status === "cancelled") {
+    return (
+      <div className="mt-3 flex items-center gap-2" aria-label="Booking cancelled">
+        <span className="h-2 w-2 rounded-full bg-destructive" aria-hidden="true" />
+        <span className="text-[10px] font-semibold uppercase tracking-widest text-destructive">
+          Cancelled
+        </span>
+      </div>
+    );
+  }
+
+  const current = LIFECYCLE_STEPS.indexOf(status as (typeof LIFECYCLE_STEPS)[number]);
+
+  return (
+    <ol className="mt-3 flex items-center" aria-label={`Booking progress: ${STATUS_LABEL[status]}`}>
+      {LIFECYCLE_STEPS.map((step, i) => {
+        const reached = i <= current;
+        return (
+          <li key={step} className="flex flex-1 items-center last:flex-none">
+            <span className="flex flex-col items-center gap-1">
+              <span
+                className={`h-2 w-2 rounded-full ${reached ? "bg-primary" : "border border-border bg-transparent"}`}
+                aria-hidden="true"
+              />
+              <span
+                className={`text-[9px] font-semibold uppercase tracking-widest ${
+                  i === current ? "text-primary" : "text-muted-foreground"
+                }`}
+              >
+                {STATUS_LABEL[step]}
+              </span>
+            </span>
+            {i < LIFECYCLE_STEPS.length - 1 ? (
+              <span
+                className={`mx-1 mb-4 h-px flex-1 ${i < current ? "bg-primary" : "bg-border"}`}
+                aria-hidden="true"
+              />
+            ) : null}
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
 function RescheduleRow({
   booking,
   onMove,
