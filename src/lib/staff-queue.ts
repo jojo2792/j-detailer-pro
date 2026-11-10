@@ -66,5 +66,5 @@ export function technicianWorkload(jobs: StaffJob[]): TechnicianWorkload[] {
 
 export function technicianLabel(technicianId: string | null, assignedToMe: boolean): string {
   if (!technicianId) return "Unassigned";
-  return assignedToMe ? "You" : `Technician ${technicianId}`;
+  return assignedToMe ? "You" : `Technician ${technicianId.slice(0, 8)}…${technicianId.slice(-4)}`;
 }

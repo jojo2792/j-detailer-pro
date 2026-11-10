@@ -22,6 +22,7 @@ export function StaffBoard() {
   const [now, setNow] = useState(() => Date.now());
   const board = useStaffBoard(scope, true);
   const { status, assignment } = useStaffJobActions(scope);
+  const busyId = status.variables?.bookingId ?? assignment.variables?.bookingId ?? null;
   const pending = status.isPending || assignment.isPending;
   const jobs = board.data?.jobs ?? [];
   const visibleJobs = filterStaffJobs(jobs, search, assignmentFilter);
@@ -45,7 +46,7 @@ export function StaffBoard() {
     <StaffJobCard
       key={job.id}
       job={job}
-      busy={pending}
+      busy={pending && busyId === job.id}
       startPassed={hasPassedStart(job, now)}
       onStatus={(next) => status.mutate({ bookingId: job.id, status: next })}
       onAssign={(claim) => assignment.mutate({ bookingId: job.id, claim })}
@@ -117,18 +118,18 @@ export function StaffBoard() {
             </div>
             {workloads.length === 0 ? <p className="text-sm text-muted-foreground">No open assignments in this view.</p> : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs" aria-label={`${scopeLabel} technician workload`}>
+                <table className="w-full table-fixed text-left text-xs" aria-label={`${scopeLabel} technician workload`}>
                   <thead className="text-muted-foreground"><tr>
-                    <th scope="col" className="min-w-40 py-2 pr-3 font-medium">Assignment</th>
-                    <th scope="col" className="px-3 py-2 text-right font-medium">Queued</th>
-                    <th scope="col" className="px-3 py-2 text-right font-medium">In progress</th>
-                    <th scope="col" className="py-2 pl-3 text-right font-medium">Scheduled min</th>
+                    <th scope="col" className="w-2/5 py-2 pr-2 font-medium">Assignment</th>
+                    <th scope="col" className="px-2 py-2 text-right font-medium">Queued</th>
+                    <th scope="col" className="px-2 py-2 text-right font-medium">In progress</th>
+                    <th scope="col" className="py-2 pl-2 text-right font-medium">Scheduled min</th>
                   </tr></thead>
                   <tbody>{workloads.map((row) => <tr key={row.technicianId ?? "unassigned"} className="border-t border-border">
-                    <th scope="row" className="max-w-64 break-all py-2.5 pr-3 font-medium">{technicianLabel(row.technicianId, row.assignedToMe)}</th>
-                    <td className="px-3 py-2.5 text-right tabular-nums">{row.queued}</td>
-                    <td className="px-3 py-2.5 text-right tabular-nums">{row.inProgress}</td>
-                    <td className="py-2.5 pl-3 text-right tabular-nums">{row.scheduledMinutes}</td>
+                    <th scope="row" title={row.technicianId ?? undefined} className="break-words py-2.5 pr-2 font-medium">{technicianLabel(row.technicianId, row.assignedToMe)}</th>
+                    <td className="px-2 py-2.5 text-right tabular-nums">{row.queued}</td>
+                    <td className="px-2 py-2.5 text-right tabular-nums">{row.inProgress}</td>
+                    <td className="py-2.5 pl-2 text-right tabular-nums">{row.scheduledMinutes}</td>
                   </tr>)}</tbody>
                 </table>
               </div>

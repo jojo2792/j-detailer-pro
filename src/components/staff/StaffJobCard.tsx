@@ -75,7 +75,7 @@ export function StaffJobCard({ job, busy, startPassed = false, onStatus, onAssig
           {startPassed && <p className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-destructive">
             <Clock className="h-3.5 w-3.5 shrink-0" aria-hidden /> Scheduled start passed · Not started
           </p>}
-          <p className="mt-2 break-all text-xs text-muted-foreground">{technicianLabel(job.technicianId, job.assignedToMe)}</p>
+          <p title={job.technicianId ?? undefined} className="mt-2 break-words text-xs text-muted-foreground">{technicianLabel(job.technicianId, job.assignedToMe)}</p>
           <p className="mt-1 break-words text-xs text-muted-foreground">{job.city}{(job.vehicleDetail || job.vehicleSummary) && ` · ${job.vehicleDetail ?? job.vehicleSummary}`}</p>
         </div>
         <Button
