@@ -56,3 +56,7 @@
 - [x] Validation: TypeScript passed. Signed-in browser check on /dashboard showed booking AFBAE2E1 (completed) with all four steps lit and the "All done" helper line; no page errors.
 - Not tested live: pending/confirmed/in-progress rendering (no booking currently in those states; no new bookings created per constraints) and the cancelled marker (the cancelled test booking 24006967 belongs to the customer account, not the owner account used for the check). Cancelled rendering is code-verified only.
 - Remaining: staff cancel/complete confirmations still not exercised live; email/SMS and payments remain deferred.
+
+## Staff daily queue — 2026-11-10
+- [ ] Front-end-only: group the authorized job board by current status, derive counts/workload from loaded records, show date-based start-time cues, and add local search/assignment filters.
+- [ ] Validate logic and read-only staff rendering on desktop/mobile; record the existing query coverage limits and all untested production actions. No production record writes or backend/security changes.
