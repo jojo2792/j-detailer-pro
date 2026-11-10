@@ -57,8 +57,8 @@ export function RevenueChart({ data }: { data: RevenuePoint[] }) {
 export function GrowthChart({ data }: { data: RevenuePoint[] }) {
   return (
     <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
-      <h3 className="font-display text-lg font-bold">Signups vs churn</h3>
-      <p className="mt-1 text-xs text-muted-foreground">Net membership movement per month.</p>
+      <h3 className="font-display text-lg font-bold">Recorded membership events</h3>
+      <p className="mt-1 text-xs text-muted-foreground">{data[0]?.month ?? "—"} through {data[data.length - 1]?.month ?? "—"} · Created and cancelled/expired events from returned history, not unique customer totals.</p>
       <ChartContainer config={growthConfig} className="mt-6 h-[260px] w-full">
         <BarChart data={data} margin={{ left: 4, right: 8, top: 8 }}>
           <CartesianGrid vertical={false} strokeOpacity={0.15} />
@@ -76,8 +76,9 @@ export function GrowthChart({ data }: { data: RevenuePoint[] }) {
 export function PlanMixChart({ data }: { data: PlanMixRow[] }) {
   return (
     <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
-      <h3 className="font-display text-lg font-bold">Revenue by plan</h3>
-      <p className="mt-1 text-xs text-muted-foreground">Active members contributing to MRR.</p>
+      <h3 className="font-display text-lg font-bold">Active monthly plan value by plan</h3>
+      <p className="mt-1 text-xs text-muted-foreground">Current loaded active memberships at listed prices; custom quotes add no value. Not collected revenue.</p>
+      {data.length === 0 && <p className="mt-3 text-sm text-muted-foreground">No active plan records returned.</p>}
       <div className="mt-6 h-[220px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical" margin={{ left: 8, right: 16 }}>
