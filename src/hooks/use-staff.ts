@@ -20,7 +20,7 @@ export function useStaffAccess() {
 }
 
 export function useStaffBoard(scope: StaffScope, enabled: boolean) {
-  return useQuery(staffBoardQuery(scope, enabled));
+  return useQuery({ ...staffBoardQuery(scope, enabled), refetchInterval: 60_000 });
 }
 
 export function useStaffJobActions(scope: StaffScope) {

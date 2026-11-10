@@ -31,7 +31,7 @@ function StaffPortal() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <section className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <header>
           <div className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">Operations</div>
           <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl">Job board</h1>
