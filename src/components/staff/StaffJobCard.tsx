@@ -11,6 +11,8 @@ import {
   XCircle,
 } from "lucide-react";
 import { formatDateTime } from "@/lib/format";
+import { technicianLabel } from "@/lib/staff-queue";
+import { Button } from "@/components/ui/button";
 import type { BookingStatus } from "@/types/booking";
 import type { StaffJob } from "@/types/staff";
 
@@ -36,11 +38,12 @@ const NEXT_ACTIONS: Record<BookingStatus, { status: BookingStatus; label: string
 interface Props {
   job: StaffJob;
   busy: boolean;
+  startPassed?: boolean;
   onStatus: (status: BookingStatus) => void;
   onAssign: (claim: boolean) => void;
 }
 
-export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
+export function StaffJobCard({ job, busy, startPassed = false, onStatus, onAssign }: Props) {
   const [open, setOpen] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [confirmComplete, setConfirmComplete] = useState(false);
@@ -48,41 +51,49 @@ export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
   const canCancel = job.status === "pending" || job.status === "confirmed" || job.status === "in_progress";
 
   return (
-    <li className="rounded-2xl border border-border bg-card p-5">
+    <li className="rounded-lg border border-border bg-card p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-primary">
+            <span className="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
               {STATUS_LABEL[job.status]}
             </span>
             <span className="text-xs text-muted-foreground">#{job.reference}</span>
             {job.assignedToMe && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-widest text-primary">
+              <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary">
                 <UserCheck className="h-3 w-3" aria-hidden /> Yours
               </span>
             )}
           </div>
-          <h3 className="mt-2 font-display text-lg font-bold">{job.serviceName}</h3>
+          <h3 className="mt-2 break-words font-display text-base font-bold">{job.serviceName}</h3>
           <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" aria-hidden /> {formatDateTime(job.scheduledAt)} ·{" "}
               {job.durationMinutes} min
             </span>
           </p>
+          {startPassed && <p className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-destructive">
+            <Clock className="h-3.5 w-3.5 shrink-0" aria-hidden /> Scheduled start passed · Not started
+          </p>}
+          <p className="mt-2 break-all text-xs text-muted-foreground">{technicianLabel(job.technicianId, job.assignedToMe)}</p>
+          <p className="mt-1 break-words text-xs text-muted-foreground">{job.city}{(job.vehicleDetail || job.vehicleSummary) && ` · ${job.vehicleDetail ?? job.vehicleSummary}`}</p>
         </div>
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-xs font-semibold uppercase tracking-widest hover:border-primary hover:text-primary"
+          aria-controls={`job-details-${job.id}`}
+          aria-label={`Details for booking ${job.reference}`}
         >
           Details
           <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden />
-        </button>
+        </Button>
       </div>
 
       {open && (
-        <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
+        <div id={`job-details-${job.id}`} className="mt-4 space-y-2 break-words border-t border-border pt-4 text-sm">
           <div className="font-semibold">{job.contactName}</div>
           <a
             href={`tel:${job.contactPhone}`}
@@ -107,7 +118,7 @@ export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
             </div>
           )}
           {job.notes && (
-            <div className="flex items-start gap-2 rounded-xl border border-border bg-background/40 p-3 text-muted-foreground">
+            <div className="flex items-start gap-2 border-l border-border pl-3 text-muted-foreground">
               <StickyNote className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden />
               <span>{job.notes}</span>
             </div>
@@ -120,9 +131,10 @@ export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
           // Completing is irreversible and awards the customer's points, so it needs a second tap.
           const needsConfirm = action.status === "completed";
           return (
-            <button
+            <Button
               key={action.status}
               type="button"
+              size="sm"
               disabled={busy}
               onClick={() => {
                 if (needsConfirm && !confirmComplete) return setConfirmComplete(true);
@@ -130,7 +142,7 @@ export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
                 onStatus(action.status);
               }}
               onBlur={() => setConfirmComplete(false)}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-gold px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground shadow-gold disabled:opacity-60"
+              className="bg-gradient-gold text-primary-foreground"
             >
               {busy ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
@@ -138,25 +150,28 @@ export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
                 <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
               )}
               {needsConfirm && confirmComplete ? "Tap again to complete" : action.label}
-            </button>
+            </Button>
           );
         })}
 
         {job.status !== "completed" && job.status !== "cancelled" && (
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             disabled={busy || (Boolean(job.technicianId) && !job.assignedToMe)}
             onClick={() => onAssign(!job.assignedToMe)}
-            className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-xs font-semibold uppercase tracking-widest hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
           >
             <UserCheck className="h-3.5 w-3.5" aria-hidden />
             {job.assignedToMe ? "Release" : job.technicianId ? "Assigned" : "Claim job"}
-          </button>
+          </Button>
         )}
 
         {canCancel && (
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             disabled={busy}
             onClick={() => {
               if (!confirmCancel) return setConfirmCancel(true);
@@ -164,10 +179,10 @@ export function StaffJobCard({ job, busy, onStatus, onAssign }: Props) {
               onStatus("cancelled");
             }}
             onBlur={() => setConfirmCancel(false)}
-            className="inline-flex items-center gap-2 rounded-full border border-destructive/40 px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-destructive hover:bg-destructive/10 disabled:opacity-60"
+            className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
           >
             <XCircle className="h-3.5 w-3.5" aria-hidden /> {confirmCancel ? "Tap again to cancel" : "Cancel"}
-          </button>
+          </Button>
         )}
       </div>
     </li>
