@@ -11,3 +11,4 @@
 
 - Derive staff queue groups, start-time cues, local filters and workload in the browser-safe `src/lib/staff-queue.ts` from the existing authorized board response; keep server queries and mutation/security boundaries unchanged to avoid new data exposure or operational side effects.
 - Staff queue totals describe loaded records in the selected scope, not a complete historical queue; preserve visible coverage/refresh notes because the existing query excludes cancelled/past-date bookings and returns at most 200 records.
+- Admin operations summaries reuse existing authorized overview, member-page and staff-board queries with unchanged server boundaries; label loaded/page/date scopes and present plan-price sums only as active plan value, never collected revenue, because no payment records are available.
