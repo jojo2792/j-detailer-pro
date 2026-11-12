@@ -56,10 +56,10 @@ export function RevenueChart({ data }: { data: RevenuePoint[] }) {
 
 export function GrowthChart({ data }: { data: RevenuePoint[] }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
+    <div className="min-w-0 rounded-2xl border border-border bg-card p-5 sm:p-6">
       <h3 className="font-display text-lg font-bold">Recorded membership events</h3>
       <p className="mt-1 text-xs text-muted-foreground">{data[0]?.month ?? "—"} through {data[data.length - 1]?.month ?? "—"} · Created and cancelled/expired events from returned history, not unique customer totals.</p>
-      <ChartContainer config={growthConfig} className="mt-6 h-[260px] w-full">
+      <ChartContainer config={growthConfig} className="mt-6 h-[260px] w-full aspect-auto sm:aspect-video">
         <BarChart data={data} margin={{ left: 4, right: 8, top: 8 }}>
           <CartesianGrid vertical={false} strokeOpacity={0.15} />
           <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} fontSize={11} />
