@@ -22,7 +22,7 @@ export const Route = createFileRoute("/memberships")({
       {
         name: "description",
         content:
-          "Essential, Premium, Platinum, Family and Fleet membership plans from TT$299/month. Recurring detailing, priority booking and member discounts.",
+          "Essential, Premium, Platinum and Family membership plans from TT$299/month. Recurring detailing, priority booking and member discounts.",
       },
       { property: "og:title", content: "Membership Plans | J The Detailer" },
       {
@@ -54,7 +54,7 @@ function Memberships() {
             One plan. <span className="text-gradient-gold">Year-round shine.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-muted-foreground">
-            Recurring premium detailing, priority booking and member-only discounts. Cancel anytime. No payment is taken online — your membership starts when you join.
+            Recurring premium detailing, priority booking and member-only discounts. Cancel anytime.
           </p>
         </div>
       </section>
@@ -66,6 +66,11 @@ function Memberships() {
             Showing our standard plan line-up — live pricing couldn&apos;t be loaded just now.
           </p>
         )}
+
+        <p className="mx-auto mb-10 max-w-3xl rounded-2xl border border-primary/40 bg-primary/5 p-5 text-center text-sm font-medium text-foreground">
+          Membership benefits begin when you join. Online payments are not currently available.
+          Please contact us to arrange membership payment.
+        </p>
 
         {plansQuery.isLoading || authLoading ? (
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -79,22 +84,6 @@ function Memberships() {
           <GuestPlanGrid plans={plans} />
         )}
 
-        <div className="mt-16 rounded-2xl border border-border bg-card p-8 text-center">
-          <div className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">Fleet Plan</div>
-          <h2 className="mt-2 font-display text-2xl font-bold sm:text-3xl">
-            5+ vehicles? Let&apos;s build a custom plan.
-          </h2>
-          <p className="mt-3 text-sm text-muted-foreground">
-            Dedicated account manager · Monthly reporting · Flexible billing · 20% service discount · 2×
-            rewards
-          </p>
-          <Link
-            to="/book"
-            className="mt-6 inline-flex rounded-full border border-primary/40 px-6 py-3 text-xs font-semibold uppercase tracking-widest text-primary hover:bg-primary/10"
-          >
-            Contact us for a Fleet quote
-          </Link>
-        </div>
       </section>
       <Footer />
     </div>
