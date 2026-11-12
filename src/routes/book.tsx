@@ -9,7 +9,7 @@ export const Route = createFileRoute("/book")({
   head: () => ({
     meta: [
       { title: "Book Now — Schedule Your Detail | J The Detailer" },
-      { name: "description", content: "Book a mobile detail, ceramic coating, or paint correction in Trinidad. Live availability, member discounts and instant confirmation." },
+      { name: "description", content: "Book a mobile detail, ceramic coating, or paint correction in Trinidad. Live availability and member discounts. Request a time and our team confirms shortly." },
       { property: "og:title", content: "Book Your Detail | J The Detailer" },
       { property: "og:description", content: "Pick your service, vehicle and time slot. Members get automatic discounts." },
       { property: "og:type", content: "website" },

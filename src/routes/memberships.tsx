@@ -54,7 +54,7 @@ function Memberships() {
             One plan. <span className="text-gradient-gold">Year-round shine.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-muted-foreground">
-            Recurring premium detailing, priority booking and member-only discounts. Cancel anytime.
+            Recurring premium detailing, priority booking and member-only discounts. Cancel anytime. No payment is taken online — your membership starts when you join.
           </p>
         </div>
       </section>
@@ -92,7 +92,7 @@ function Memberships() {
             to="/book"
             className="mt-6 inline-flex rounded-full border border-primary/40 px-6 py-3 text-xs font-semibold uppercase tracking-widest text-primary hover:bg-primary/10"
           >
-            Request a Quote
+            Contact us for a Fleet quote
           </Link>
         </div>
       </section>

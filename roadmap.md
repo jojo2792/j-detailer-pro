@@ -81,3 +81,7 @@
 - [x] Roadmap now records the completed staff/admin scope, data-coverage limits and untested cases, distinguishing real read-only data from earlier display-only fixtures. This follow-up changes only chart sizing and these notes; not deployed.
 - Still untested: other mobile widths/browser engines, mobile long/multi-page datasets, and the live populated/error/permission/write flows listed above. Staff cancel/complete first-tap/blur-reset safeguards were tested with display fixtures previously, but their production mutation paths remain untested in these follow-ups. Historical successful booking/reward/notification and owner-confirmed security tests were not rerun; their records remain intact.
 - Remaining, outside this task: review staff/admin with real upcoming jobs; any full-history/pagination/name-directory expansion requires separately scoped authorized reads. Payments and custom-domain/email/SMS remain deferred; no provider dependencies or integrations added. Credits were available (4.80 remaining at the initial check); no top-up or alternative paid action was attempted.
+
+## Customer journey audit follow-up (2026-11-12)
+- Done: /book copy no longer promises instant confirmation; button reads "Request booking"; guest sign-in returns to /book; memberships note no online payment; Fleet button relabelled.
+- Open: service pre-select from /services; real Fleet quote form; billing wording to confirm with owner.

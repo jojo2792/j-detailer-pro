@@ -457,7 +457,7 @@ export function BookingWizard() {
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-gold px-8 py-3.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground shadow-gold disabled:opacity-50 sm:w-auto"
           >
             {create.isPending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
-            Confirm booking
+            Request booking
           </button>
         ) : (
           <div className="mt-6 rounded-xl border border-border p-4">
@@ -466,6 +466,7 @@ export function BookingWizard() {
             </p>
             <Link
               to="/auth"
+              search={{ next: "/book" }}
               className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-gold px-7 py-3 text-xs font-semibold uppercase tracking-widest text-primary-foreground shadow-gold"
             >
               Sign in to book
